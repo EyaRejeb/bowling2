@@ -1,7 +1,7 @@
 package bowling;
 
 /**
- * Correspond à un tour "normal" du jeu, constitué de 1 ou 2 lancers
+ * Correspond à un tour du jeu, constitué de 1 ou 2 lancers
  * Connait son tour suivant, pour calculer le bonus éventuel
  * pour le strike ou le spare.
  */
@@ -14,15 +14,10 @@ public class Tour {
 
 	protected Tour suivant;
 	
-	protected Tour() {
+	public Tour() {
 		// Vide pour l'héritage
 	}
 
-	/**
-	 * Crée un nouveau tour
-	 * @param number : numéro de ce tour
-	 * @param next : le tour suivant
-	 */
 	public Tour(int number, Tour next) {
 		if (number < 1 || number > 9) {
 			throw new IllegalArgumentException("Les tours normaux sont numérotés de 1 to 9");
@@ -36,7 +31,7 @@ public class Tour {
 	}
 
 	/**
-	 * Combien de boules ont été lancées dans ce tour ?
+	 * 
 	 * @return the number of balls already thrown in this frame
 	 **/
 	public int getBoulesLancees() {
@@ -44,15 +39,14 @@ public class Tour {
 	}
 
 	/**
-	 * Numéro de ce tour
-	 * @return le numéro de ce tour
+	 * 
+	 * @return le numéro de cette frame
 	 */
 	public int getNumero() {
 		return numero;
 	}
 
 	/**
-	 * Est-ce que ce tour est terminé ?
 	 * @return vrai si ce tour est fini, faux sinon
 	 */
 	public boolean estTermine() {
@@ -62,7 +56,7 @@ public class Tour {
 	/**
 	 * enregistrer le résultat d'un lancer
 	 *
-	 * @param combien : nombre de quilles abattues à ce lancer
+	 * @param combien : nombre de quilles abattue à ce lancer
 	 */
 	void enregistreLancer(int combien) {
 		if (combien < 0) {
@@ -118,8 +112,8 @@ public class Tour {
 	/**
 	 * @return le score réalisé à partir de ce tour en tenant compte des bonus éventuels
 	 */
-	int scoreCumule() {
-		int scoreDeCeTour;
+	int score() {
+		int scoreDeCeTour = 0;
 		if (estUnStrike()) {
 			scoreDeCeTour = 10 + suivant.bonusPourStrike();
 		} else if (estUnSpare()) {
@@ -127,13 +121,13 @@ public class Tour {
 		} else {
 			scoreDeCeTour = quillesAbattuesLancer1 + quillesAbattuesLancer2;
 		}
-		return scoreDeCeTour + suivant.scoreCumule();
+		return scoreDeCeTour + suivant.score();
 	}
 
 	/**
 	 * @return le tour suivant ce tour
 	 */
-	Tour getSuivant() {
+	Tour next() {
 		return suivant;
 	}
 

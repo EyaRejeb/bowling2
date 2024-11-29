@@ -19,7 +19,8 @@ public class PartieMonoJoueur {
         // On construit ainsi une "liste chainée" de tours
         tourCourant = new DernierTour();
         for (int numero = 9; numero > 0; numero--) {
-		tourCourant = new Tour(numero, tourCourant);
+            Tour nouveauTour = new Tour(numero, tourCourant);
+            tourCourant = nouveauTour;
         }
         premierTour = tourCourant;
     }
@@ -28,16 +29,16 @@ public class PartieMonoJoueur {
      * Cette méthode doit être appelée à chaque lancer de boule
      *
      * @param nombreDeQuillesAbattues le nombre de quilles abattues lors de ce lancer
-     * @throws IllegalStateException si la partie est terminée
+	 * @throws IllegalStateException si la partie est terminée
      * @return vrai si le joueur doit lancer à nouveau pour continuer son tour, faux sinon
      */
     public boolean enregistreLancer(int nombreDeQuillesAbattues) {
-        if (estTerminee())
-            throw new IllegalStateException("La partie est terminée");
+        if (tourCourant == null)
+            throw new IllegalStateException("Le jeu est fini");
 
         tourCourant.enregistreLancer(nombreDeQuillesAbattues);
         if (tourCourant.estTermine()) {
-            tourCourant = tourCourant.getSuivant();
+            tourCourant = tourCourant.next();
         }
         return ! (this.estTerminee() || tourCourant.getBoulesLancees() == 0);
     }
@@ -50,11 +51,10 @@ public class PartieMonoJoueur {
      * @return Le score du joueur
      */
     public int score() {
-        return premierTour.scoreCumule();
+        return premierTour.score();
     }
 
     /**
-     * Teste si la partie est terminée.
      * @return vrai si le jeu est finin faux sinon
      */
     public boolean estTerminee() {
@@ -62,7 +62,6 @@ public class PartieMonoJoueur {
     }
 
     /**
-     * A quel tour en est-on ?
      * @return Le numéro du tour courant [1..10], ou 0 si le jeu est fini
      */
     public int numeroTourCourant() {
@@ -70,8 +69,7 @@ public class PartieMonoJoueur {
     }
 
     /**
-     * Quel est le numéro du prochain lancer dans le tour courant ?
-     * @return Le numéro du prochain lancer pour tour courant [1..3], ou 0 si le jeu
+     * @return Le numéro du prochain lancer pour tour courant [1..2], ou 0 si le jeu
      *         est fini
      */
     public int numeroProchainLancer() {

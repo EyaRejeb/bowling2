@@ -1,7 +1,7 @@
 package bowling;
 
 /**
- * Interface pour une partie de bowling pour plusieurs joueurs
+ *
  * @author rbastide
  */
 public interface IPartieMultiJoueurs {
